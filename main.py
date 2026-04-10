@@ -1,27 +1,56 @@
-# main.py
-
+# Quiz 클래스 정의 (이전과 동일)
 class Quiz:
-    """
-    퀴즈 문제를 나타내는 클래스.
-    문제(question)와 정답(answer) 속성을 가집니다.
-    """
-    def __init__(self, question, answer):
-        # 퀴즈 객체가 생성될 때 문제와 정답을 받아서 저장합니다.
+    def __init__(self, question, choices, answer):
         self.question = question
+        self.choices = choices
         self.answer = answer
 
-# 퀴즈 데이터 목록 (딕셔너리의 리스트)
-quiz_data = [
-    Quiz("겉은 빨갛고 아삭하며, '하루에 하나면 의사가 필요 없다'는 과일은?", ["사과", "토마토", "자두", "체리"], 1),
-    Quiz("여름철 대표 과일로, 검은 줄무늬가 있는 커다란 과일은?", ["딸기", "수박", "참외", "복숭아"], 2),
-    Quiz("길쭉한 모양에 껍질을 까서 먹는 노란색 과일은?", ["바나나", "키위", "오렌지", "블루베리"], 1),
-    Quiz("(넌센스퀴즈) 세상에서 가장 뜨거운 과일은?", ["백도복숭아", "황도복숭아", "납작복숭아", "천도복숭아"], 4),
-    Quiz("껍질에 털이 있고 분홍빛이 도는 달콤한 과일은?", ["복숭아", "키위", "두리안", "람부탄"], 1),
+# 1. 퀴즈 데이터 준비 (기존 코드)
+quizzes = [
+    Quiz("가장 큰 과일은 무엇일까요?", ["수박", "딸기", "사과"], "수박"),
+    Quiz("노란색이고 신 맛이 나는 과일은 무엇일까요?", ["포도", "오렌지", "레몬"], "레몬"),
+    Quiz("보통 껍질을 깎아먹는 과일은 무엇일까요?", ["사과", "블루베리", "체리"], "사과"),
+    Quiz("세상에서 가장 인기 있는 과일은 무엇일까요?", ["바나나", "토마토", "망고"], "토마토"),
+    Quiz("여름이 제철인 과일은 무엇일까요?", ["귤", "복숭아", "석류"], "복숭아")
 ]
 
-# --- 클래스와 데이터가 잘 만들어졌는지 테스트하는 코드 ---
-# 첫 번째 퀴즈 객체의 내용을 확인해 봅시다.
-first_quiz = quiz_data[0]
-print(f"문제: {first_quiz.question}")
-print(f"보기: {first_quiz.choices}")
-print(f"정답(번호): {first_quiz.answer}")
+# 퀴즈 풀기 로직 시작
+def run_quiz():
+    # 5. 퀴즈가 없는 경우 처리
+    if not quizzes:
+        print("풀 수 있는 퀴즈가 없습니다. 퀴즈를 먼저 추가해주세요.")
+        return # 함수를 즉시 종료
+
+    score = 0
+    # 1. 저장된 퀴즈를 하나씩 출제
+    for idx, quiz in enumerate(quizzes):
+        print(f"\n--- 문제 {idx + 1} ---")
+        print(quiz.question)
+
+        # 보기 출력
+        for i, choice in enumerate(quiz.choices):
+            print(f"{i + 1}. {choice}")
+
+        # 2. 사용자가 정답을 입력
+        user_answer = input("정답을 입력해주세요: ")
+
+        # 3. 정답/오답 여부 판정
+        if user_answer == quiz.answer:
+            print("정답입니다! 🎉")
+            score += 1
+        else:
+            print(f"아쉽네요. 정답은 '{quiz.answer}' 입니다.")
+
+    # 4. 모든 문제를 풀면 결과 표시
+    print("\n--- 모든 문제를 다 풀었습니다! ---")
+    total_questions = len(quizzes)
+    print(f"총 {total_questions}문제 중 {score}문제를 맞혔습니다.")
+    
+    # 정답률도 계산해서 보여주기 (선택 사항)
+    accuracy = (score / total_questions) * 100
+    print(f"정답률: {accuracy:.1f}%")
+
+
+# 프로그램 실행
+if __name__ == "__main__":
+    run_quiz()
